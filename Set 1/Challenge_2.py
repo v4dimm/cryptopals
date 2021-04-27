@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-import array
-import operator
+from array import array
+from operator import xor
 
 def xor_strings(s1, s2):
     if len(s1) == len(s2):
-        _s1 = array.array('B', s1)
-        _s2 = array.array('B', s2)
-        result = array.array('B', map(operator.xor, _s1, _s2)).tobytes()
+        _s1 = array('B', s1)
+        _s2 = array('B', s2)
+        result = array('B', map(xor, _s1, _s2)).tobytes()
         return result
     else:
         return ''

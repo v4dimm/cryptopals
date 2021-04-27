@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
 
-import re
-import math
+from math import sqrt
 from collections import Counter
 from Challenge_2 import xor_strings
-import struct
+from struct import pack
 
 FREQUENCY_TABLE = {
     "a": 8.167,
@@ -40,14 +39,14 @@ FREQUENCY_TABLE = {
 def check_english(_string):
     text = Counter(_string.lower())
     coefficient = sum(
-        math.sqrt(FREQUENCY_TABLE.get(chr(char), 0) * y/len(_string))
+        sqrt(FREQUENCY_TABLE.get(chr(char), 0) * y/len(_string))
         for char, y in text.items()
     )
     return coefficient
 
 
 def xoring(byte, string):
-    b_string = struct.pack('B', byte) * len(string)
+    b_string = pack('B', byte) * len(string)
     return xor_strings(b_string, string)
 
 
@@ -62,6 +61,5 @@ def bruteforce_string(_string):
 
 
 if __name__ == "__main__":
-    # text = '0e3647e8592d35514a081243582536ed3de6734059001e3f535ce6271032'
     text = '1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736'
     print('Result: {}'.format(bruteforce_string(text)))

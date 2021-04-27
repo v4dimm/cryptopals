@@ -2,7 +2,6 @@
 
 from Challenge_3 import bruteforce_string
 from requests import get
-import re
 
 strings = get('https://cryptopals.com/static/challenge-data/4.txt').text.split('\n')
 res = []
