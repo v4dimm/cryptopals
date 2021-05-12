@@ -1,29 +1,18 @@
 #!/usr/bin/env python3
 
-from Challenge_2 import xor_strings
-
-def convert_key(string, key):
-    string_length = len(string)
-    key_length = len(key)
-    key = key * round(
-        string_length/key_length
-    )
-    return key[:string_length]
-
-
-def xor_with_key(string, key):
-    b_convert_key = convert_key(string, key).encode()
-    b_string = string.encode()
-
-    result = xor_strings(b_convert_key, b_string)
-    return bytes.hex(result)
+def repeating_xor_key(plaintext, key):
+    ciphertext = b''
+    i = 0
+    for byte in plaintext:
+        ciphertext += bytes([byte ^ key[i]])
+        i = i + 1 if i < len(key) - 1 else 0
+    return ciphertext
 
 
 if __name__ == "__main__":
 
-    text = '''Burning 'em, if you ain't quick and nimble
-    I go crazy when I hear a cymbal'''
+    text = b"Burning 'em, if you ain't quick and nimble\nI go crazy when I hear a cymbal"
 
-    key = 'ICE'
+    key = b"ICE"
 
-    print(xor_with_key(text, key))
+    print(repeating_xor_key(text, key).hex())

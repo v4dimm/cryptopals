@@ -2,21 +2,18 @@
 from array import array
 from operator import xor
 
-def xor_strings(s1, s2):
+def xor_hex_strings(s1, s2):
     if len(s1) == len(s2):
-        _s1 = array('B', s1)
-        _s2 = array('B', s2)
-        result = array('B', map(xor, _s1, _s2)).tobytes()
-        return result
-    else:
-        return ''
+        hex_s1 = int(s1, 16)
+        hex_s2 = int(s2, 16)
+        xor = hex_s1 ^ hex_s2
+
+        return hex(xor)[2:]
 
 if __name__ == '__main__':
-    s1 = u'1c0111001f010100061a024b53535009181c'
-    s2 = u'686974207468652062756c6c277320657965'
+    s1 = '1c0111001f010100061a024b53535009181c'
+    s2 = '686974207468652062756c6c277320657965'
 
-    _s1 = bytes.fromhex(s1)
-    _s2 = bytes.fromhex(s2)
-
-    result = xor_strings(_s1, _s2)
-    print('Result: {}'.format(result))
+    result = xor_hex_strings(s1, s2)
+    if result == '746865206b696420646f6e277420706c6179':
+        print('Result: {}'.format(result))

@@ -2,7 +2,6 @@
 
 from math import sqrt
 from collections import Counter
-from Challenge_2 import xor_strings
 from struct import pack
 
 FREQUENCY_TABLE = {
@@ -45,21 +44,27 @@ def check_english(_string):
     return coefficient
 
 
-def xoring(byte, string):
-    b_string = pack('B', byte) * len(string)
-    return xor_strings(b_string, string)
+def xor_single_byte(byte, string):
+    res = b''
+    for char in string:
+        res += bytes([char ^ byte])
+    return res
 
 
-def bruteforce_string(_string):
+def bruteforce_binary_string(_string):
     emap = []
-    for byte in range(0, 255):
-        res = xoring(byte, bytes.fromhex(_string))
-        emap.append((check_english(res), res))
-    emap.sort(key=lambda x: x[0], reverse=True)
-    res = emap[0][1] if len(emap) > 0 else None
+    for byte in range(256):
+        res = xor_single_byte(byte, _string)
+        emap.append({
+            'key': byte,
+            'score': check_english(res),
+            'plaintext': res
+        })
+    emap.sort(key=lambda x: x['score'], reverse=True)
+    res = emap[0] if len(emap) > 0 else None
     return res
 
 
 if __name__ == "__main__":
-    text = '1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736'
-    print('Result: {}'.format(bruteforce_string(text)))
+    text = bytes.fromhex('1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736')
+    print('Result: {}'.format(bruteforce_binary_string(text)['plaintext']))
