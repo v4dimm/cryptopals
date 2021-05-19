@@ -5,6 +5,10 @@ from Crypto.Cipher import AES
 from C7S1 import encrypt_ecb, decrypt_ecb
 from C9S2 import pad_block
 
+KEY = b"YELLOW SUBMARINE"
+BLOCK_SIZE = AES.block_size
+IV = bytes(BLOCK_SIZE)
+
 
 def get_text():
     text = get('https://cryptopals.com/static/challenge-data/10.txt').text
@@ -45,16 +49,17 @@ def decrypt_cbc(ciphertext, block_size, key, IV):
     return plaintext
 
 
-def main():
-    key = b"YELLOW SUBMARINE"
-    block_size = AES.block_size
-    IV = bytes(block_size)
+def get_plaintext():
     ciphertext = get_text()
-    plaintext = decrypt_cbc(ciphertext, block_size, key, IV)
+    plaintext = decrypt_cbc(ciphertext, BLOCK_SIZE, KEY, IV)
+    return plaintext
 
+
+def main():
+    plaintext = get_plaintext()
     checktext = b'Check correct AES CBC work'
     decrypted_ciphertext = decrypt_cbc(
-        encrypt_cbc(checktext, block_size, key, IV), AES.block_size, key, IV
+        encrypt_cbc(checktext, BLOCK_SIZE, KEY, IV), AES.block_size, KEY, IV
     ) 
     
     print('Check AES CBC work\nPlaintext: {0}\nDecrypt ciphertext: {1}\n\n'.format(checktext, decrypted_ciphertext))

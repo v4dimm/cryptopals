@@ -6,16 +6,20 @@ def get_cipher_blocks():
     return ciphertext
 
 
+def get_repeating_chunk(text, block_size):
+    chunks = [text[i:i + block_size] for i in range(0, len(text), block_size)]
+    repeating = len(chunks) - len(set(chunks))
+    return {
+        'repeating': repeating,
+        'chunk': text
+    }
+
+
 def get_repeating_block(ciphertext, block_size):
     numbers = []
 
     for block in ciphertext:
-        chunks = [block[i:i + block_size] for i in range(0, len(block), block_size)]
-        repeating = len(chunks) - len(set(chunks))
-        numbers.append({
-            'repeating': repeating,
-            'block': block
-        })
+        numbers.append(get_repeating_chunk(block, block_size))
     
     most_repeating_block = sorted(numbers, key=lambda x: x['repeating'], reverse=True)[0]
     return most_repeating_block
