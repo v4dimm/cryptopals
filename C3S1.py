@@ -2,7 +2,6 @@
 
 from math import sqrt
 from collections import Counter
-from struct import pack
 
 FREQUENCY_TABLE = {
     "a": 8.167,

@@ -1,7 +1,4 @@
 from requests import get
-from base64 import b64decode
-from Crypto.Cipher import AES
-
 
 def get_cipher_blocks():
     text = get('https://cryptopals.com/static/challenge-data/8.txt').text

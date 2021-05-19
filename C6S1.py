@@ -1,12 +1,10 @@
 #!/usr/bin/env python3
 
-from itertools import zip_longest
 from collections import Counter
 from requests import get
 from base64 import b64decode
-from Challenge_3 import bruteforce_binary_string, check_english
-from Challenge_5 import repeating_xor_key
-import numpy as np
+from C3S1 import bruteforce_binary_string, check_english
+from C5S1 import repeating_xor_key
 
 
 def search_keysize(text):

@@ -9,6 +9,12 @@ def decrypt_ecb(ciphertext, key):
     return plaintext
 
 
+def encrypt_ecb(plaintext, key):
+    cipher = AES.new(key, AES.MODE_ECB)
+    ciphertext = cipher.encrypt(plaintext)
+    return ciphertext
+
+
 def get_text():
     text = get('https://cryptopals.com/static/challenge-data/7.txt').text
     return b64decode(text)
@@ -21,5 +27,17 @@ def main():
     return message
 
 
+def check_encrypt():
+    key = b"YELLOW SUBMARINE"
+    plaintext = main()
+    ciphertext = encrypt_ecb(plaintext, key)
+    if ciphertext == get_text():
+        print("That's work")
+
+
+
 if __name__ == "__main__":
-    print(main())
+    plaintext = main()
+    print(plaintext)
+    
+    check_encrypt()
