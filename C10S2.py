@@ -2,9 +2,7 @@ from sys import platform
 from requests import get
 from base64 import b64decode
 from Crypto.Cipher import AES
-# from binascii import hexlify
 from C7S1 import encrypt_ecb, decrypt_ecb
-from C2S1 import xor_hex_strings
 from C9S2 import pad_block
 
 
@@ -24,9 +22,11 @@ def encrypt_cbc(plaintext, block_size, key, IV):
     prev = IV
 
     for block in blocks:
+        block = pad_block(block, block_size)
         xored_text = xor_data(block, prev)
-        ciphertext += encrypt_ecb(xored_text, key)
-        prev = block
+        cipherblock = encrypt_ecb(xored_text, key)
+        ciphertext += cipherblock
+        prev = cipherblock
  
     return ciphertext
 
@@ -52,12 +52,12 @@ def main():
     ciphertext = get_text()
     plaintext = decrypt_cbc(ciphertext, block_size, key, IV)
 
-    print(encrypt_cbc(plaintext, block_size, key, IV))
-    print()
-    print(ciphertext)
-
-    if encrypt_cbc(plaintext, block_size, key, IV) == ciphertext:
-        print('encrypt correct')
+    checktext = b'Check correct AES CBC work'
+    decrypted_ciphertext = decrypt_cbc(
+        encrypt_cbc(checktext, block_size, key, IV), AES.block_size, key, IV
+    ) 
+    
+    print('Check AES CBC work\nPlaintext: {0}\nDecrypt ciphertext: {1}\n\n'.format(checktext, decrypted_ciphertext))
 
     return plaintext
 
