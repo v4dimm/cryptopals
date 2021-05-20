@@ -50,11 +50,13 @@ def get_cipher_block_mode(plaintext):
         return encrypt_AES_CBC_with_random_key(plaintext, key)
 
 
-def detect_cipher_block_mode(ciphertext):
-    if get_repeating_chunk(ciphertext, AES.block_size)['repeating'] > 0:
+def detect_cipher_block_mode(ciphertext, block_size = AES.block_size):
+    if get_repeating_chunk(ciphertext, block_size)['repeating'] > 0:
         print("That's ECB")
+        return "ECB"
     else:
         print("That's CBC")
+        return "CBC"
 
 
 def main():
