@@ -16,6 +16,16 @@ def generate_random_bytes(count):
     return random_bytes
 
 
+def encrypt_AES_ECB_with_random_key(plaintext, key=generate_AES_key()):
+    modified_plaintext = generate_random_bytes(randint(5, 10)) + plaintext + generate_random_bytes(randint(5, 10))
+
+    ciphertext = encrypt_ecb(
+        modified_plaintext, 
+        key,
+    )
+    return ciphertext
+
+
 def encrypt_AES_CBC_with_random_key(plaintext, key=generate_AES_key()):
     IV = generate_AES_key() # same thing
     modified_plaintext = generate_random_bytes(randint(5, 10)) + plaintext + generate_random_bytes(randint(5, 10))
@@ -34,7 +44,7 @@ def get_cipher_block_mode(plaintext):
     key = generate_AES_key()
     if mode == 1:
         print('Use ECB')
-        return encrypt_ecb(plaintext, key)
+        return encrypt_AES_ECB_with_random_key(plaintext, key)
     elif mode == 2:
         print('Use CBC')
         return encrypt_AES_CBC_with_random_key(plaintext, key)
@@ -48,7 +58,7 @@ def detect_cipher_block_mode(ciphertext):
 
 
 def main():
-    plaintext = b'q' * 16 + b'w'*16 + b'q'*16
+    plaintext = b'q' * 16 + b'w'*16 + b'q'*16 + b'w'*16 + b'q'*16
     ciphertext = get_cipher_block_mode(plaintext)
 
     print('Plaintext: {0}\nCiphertext: {1}'.format(plaintext, ciphertext))

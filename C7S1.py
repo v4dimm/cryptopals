@@ -1,5 +1,6 @@
 from requests import get
 from base64 import b64decode
+from C9S2 import pad_text
 from Crypto.Cipher import AES
 
 
@@ -10,6 +11,7 @@ def decrypt_ecb(ciphertext, key):
 
 
 def encrypt_ecb(plaintext, key):
+    plaintext = pad_text(plaintext, AES.block_size)
     cipher = AES.new(key, AES.MODE_ECB)
     ciphertext = cipher.encrypt(plaintext)
     return ciphertext
